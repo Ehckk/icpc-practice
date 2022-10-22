@@ -4,7 +4,7 @@ pub fn goof(sequence: &[char]) -> usize {
     loop {
         if let Some(_folded) = _fold(folded) {
             folded = _folded;
-            println!("Pointer to folded: {:#X}", std::ptr::addr_of!(folded) as usize);
+            // println!("Pointer to folded: {:#X}", std::ptr::addr_of!(folded) as usize);
         }
         else {
             return folded.len();
