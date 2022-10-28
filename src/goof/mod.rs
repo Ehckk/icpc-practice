@@ -3,6 +3,7 @@ pub fn goof(sequence: &[char]) -> usize {
     // println!("Original fold: {folded:?}");
     loop {
         if let Some(_folded) = _fold(folded) {
+            // println!("Fold to len {}", folded.len());
             folded = _folded;
             // println!("Pointer to folded: {:#X}", std::ptr::addr_of!(folded) as usize);
         }
@@ -17,6 +18,7 @@ pub fn goof(sequence: &[char]) -> usize {
 /// If sequence cannot be folded, return None
 fn _fold(seq: &[char]) -> Option<&[char]> {
     let len = seq.len();
+    let middle = len/2;
     if len < 2 {
         return None;
     }
@@ -24,7 +26,8 @@ fn _fold(seq: &[char]) -> Option<&[char]> {
     let mut right_pal: Option<usize> = None;
 
     let mut left_letter_idx = 0;
-    while left_letter_idx < len / 2 {
+    
+    while left_letter_idx < middle {
         // Find the furthest set of double letters that make a palindrome as long as it starts from the left
         if seq[left_letter_idx] == seq[left_letter_idx + 1] { // letters match
             // If palindrome, save idx of next right letter
@@ -40,7 +43,7 @@ fn _fold(seq: &[char]) -> Option<&[char]> {
         left_letter_idx += 1;
     }
     let mut right_letter_idx = len - 1;
-    while right_letter_idx > len / 2 {
+    while right_letter_idx > middle {
         // Find the furthest set of double letters that make a palindrome as long as it starts from the right
         if seq[right_letter_idx] == seq[right_letter_idx - 1] { // letters match
             // If palindrome, save idx of next right letter
@@ -80,6 +83,46 @@ fn _fold(seq: &[char]) -> Option<&[char]> {
             None
         }
     }
+}
+
+
+pub fn goof_ff(sequence: &[char]) -> usize {
+    let mut folded = sequence;
+    // println!("Original fold: {folded:?}");
+    loop {
+        if let Some(_folded) = _fold_first(folded) {
+            // println!("Fold to len {}", folded.len());
+            folded = _folded;
+            // println!("Pointer to folded: {:#X}", std::ptr::addr_of!(folded) as usize);
+        }
+        else {
+            // println!("Folded {n} times");
+            return folded.len();
+        }
+    }
+}
+/// If sequence can be folded, return Some containing the slice as folded
+/// If sequence cannot be folded, return None
+fn _fold_first(seq: &[char]) -> Option<&[char]> {
+    let len = seq.len();
+    let middle = len/2;
+    if len < 2 {
+        return None;
+    }
+    let last_idx = len-1;
+    for i in 0..middle {
+        if seq[i] == seq[i + 1] { // letters match
+            if is_palindrome(&seq[..=(i*2+1)]) {
+                return Some(&seq[(i+1)..])
+            }
+        }
+        if seq[last_idx - i] == seq[last_idx - i - 1] {
+            if is_palindrome(&seq[(2*(last_idx-i)-len)..]) {
+                return Some(&seq[..(last_idx - i)])
+            }
+        }
+    }
+    None
 }
 
 /// returns true if the entire sequence is a palindrome
@@ -170,7 +213,7 @@ pub fn recursive_goof(seq: &[char]) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use crate::goof::{recursive_goof, goof};
+    use crate::{goof::{recursive_goof, goof, goof_ff}, comb::Combinations};
 
     use super::is_palindrome;
 
@@ -211,5 +254,19 @@ mod tests {
 
         let chars: Vec<char> = "AAAAGAATTAA".chars().collect();
         assert_eq!(goof(&chars), 5);
+    }
+
+    #[test]
+    fn prove_short_and_long_folds() {
+        let max_len = 20;
+        let genes = ['A', 'T', 'C', 'G'];
+        for i in 1..max_len {
+            let combs = Combinations::from_choices(genes.to_vec(), i);
+            for comb in combs {
+                assert_eq!(goof(&comb), goof_ff(&comb));
+            }
+            println!("Finish all combinations of length {i}");
+        }
+        
     }
 }
