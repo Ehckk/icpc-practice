@@ -1,2 +1,14 @@
-/target
+# Rust files
+target/
 Cargo.lock
+
+# Python files
+__pycache__
+
+# Node js
+node_modules/
+# General build directory
+build/
+
+# MacOS
+.DS_Store
