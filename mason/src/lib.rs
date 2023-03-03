@@ -8,3 +8,4 @@ pub mod comb;
 
 pub mod game_night;
 pub mod towering;
+pub mod kattis;
