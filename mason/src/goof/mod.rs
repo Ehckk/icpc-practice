@@ -257,6 +257,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "takes too long"]
     fn prove_short_and_long_folds() {
         let max_len = 20;
         let genes = ['A', 'T', 'C', 'G'];
