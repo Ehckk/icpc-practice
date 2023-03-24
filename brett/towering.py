@@ -24,5 +24,16 @@ def solve(line_in):
 
     return " ".join([str(c) for c in (ans_raw + rest_raw)])
 
+
+i = 0
+input = []
+for s in sys.stdin.readlines():
+    input.append(s)
+    
+    i += 1
+    if i == 4:
+        break
+
+
 for s in sys.stdin:
-    print(solve(s))
+    print(solve(input))
