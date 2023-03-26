@@ -47,6 +47,7 @@ def stack_boxes(box_in):
     return ''
 
 
+
 for input_in in sys.stdin:
     stack_boxes(input_in)
     print()
