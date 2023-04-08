@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 class RunningMom {
-    private HashMap<String, ArrayList<String>> graph = new HashMap<String, ArrayList<String>>();
-    private HashMap<String, Boolean> visited = new HashMap<String, Boolean>();
-    private HashMap<String, Boolean> safeCityMap = new HashMap<String, Boolean>();
-    private HashSet<String> checking = new HashSet<String>();
+    private HashMap<String, ArrayList<String>> graph = new HashMap<String, ArrayList<String>>(); // Graph
+    private HashMap<String, Boolean> visited = new HashMap<String, Boolean>(); // Visited cities
+    private HashMap<String, Boolean> safeCityMap = new HashMap<String, Boolean>(); // Maps cities to whether or not they are safe
+    private HashSet<String> checking = new HashSet<String>(); // Set, will track valid (safe) cities along the recursion 
 
-    private ArrayList<String> startingCities = new ArrayList<String>();
+    private ArrayList<String> startingCities = new ArrayList<String>(); // Stores the origin cities
 
     public static void main(String[] args) {
         Scanner scnr = new Scanner(System.in); 
