@@ -21,6 +21,6 @@
     documentation: 
     [How to clone a repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
     
-    
+    ![clone](https://user-images.githubusercontent.com/76856697/232069334-5574d229-5537-4e4b-97cd-d4e9609ce87a.png)
 
  
