@@ -13,12 +13,14 @@
     
     Source Code: This folder should contain all of your source code files.
 
-    Data: This folder should contain any data files needed for your project, such as spreadsheets, text files, or images. 
-
+    Data: This folder should contain any data files needed for your project, such as spreadsheets, text files, or images.  
 
     
- 2) Clone the icpc-practice project to you local machine and add the folder (created in step 1 ) to the project and then you may add or delete files inside     your folder (do not modify any other folders)
+ 2) Clone the icpc-practice project to you local machine and add the folder (created in step 1 ) to the project and then you may add or delete files inside your folder (do not modify any other folders)
  
-    documentation: [How to clone a repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+    documentation: 
+    [How to clone a repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+    
+    
 
  
