@@ -1,15 +1,13 @@
+'''
+combo = ['A', 'R', 'B', 'L']
+if len(combo) == 4:
+    combo.pop(0)
+    if (combo.count('R') == 1) and (combo.count('B') == 1) and (combo.count('L') == 1):
+        print('COMBO FOUND')
+'''
 
-stringInp = []
-inp1 = input().split()
-nHouse = int(inp1[0])
-nRows = int(inp1[1])
+output = "RRRBL"
+output = output[:-3]
+output += 'C'
 
-
-for _ in range(nRows):
-    stringInp.append(input().split())
-
-inp = []
-for i in stringInp:
-    inp.append(list(map(int, i)))
-
-inp.sort()
+print(output)
