@@ -4,7 +4,8 @@
 
 1) To get started, create a directory on your machine to house all of your project files. "folder name: [your name]"
     
-    
+    ![jondoe](https://user-images.githubusercontent.com/76856697/232074922-ca36ae5c-1771-4ce0-9b8c-0c34214755ba.png)
+
     Documentation: This folder should contain any relevant documentation related to your project, if project has multiple files     consider creating
     sub-folders to keep relavant files together.
 
