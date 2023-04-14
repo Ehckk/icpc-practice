@@ -3,7 +3,8 @@
 ## The purpose of this repo is to collaborate and house all solutions to [open kattis](open.kattis.com) problems and organize your files and folders. 
 
 1) To get started, you should create a folder on your computer to house all of your project files. "folder name: [your name]"
-
+    ![icpc-folders](https://user-images.githubusercontent.com/76856697/232063115-44c9ae82-d298-459a-bbd6-f832729770fb.png)
+    
     Documentation: This folder should contain any relevant documentation related to your project, if project has multiple files consider creating
     sub-folders to keep relavant files together.
 
