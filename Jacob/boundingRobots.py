@@ -4,6 +4,7 @@ April 14, 2023
 Bounding Robots Kattis https://open.kattis.com/problems/boundingrobots
 '''
 
+# repeat processes for max amnt of simulations
 for i in range(100):
     inputLine = input()
     
