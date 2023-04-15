@@ -41,7 +41,7 @@ for i in range(100):
             posRobot[0] -= distance
             posActual[0] -= distance
 
-            # limit actual position to stop at left wall (0)
+            # limit actual position to stop at left wall (x = 0)
             if posActual[0] < 0:
                 posActual[0] = 0
 
@@ -49,6 +49,8 @@ for i in range(100):
         elif dir == 'u':
             posRobot[1] += distance
             posActual[1] += distance
+            
+            # limit actual position to stop at top wall (y = l-1)
             if posActual[1] > (l-1): 
                 posActual[1] = (l-1)
 
@@ -56,6 +58,8 @@ for i in range(100):
         elif dir == 'd':
             posRobot[1] -= distance
             posActual[1] -= distance
+            
+            # limit actual position to stop at bottom wall (y = 0)
             if posActual[1] < 0:
                 posActual[1] = 0
 
