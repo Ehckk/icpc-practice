@@ -1,7 +1,6 @@
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class FloweryTrails {
@@ -74,6 +73,7 @@ public class FloweryTrails {
 		priorityQueue.add(new int[] { 0, 0, 0, -1 }); // Enqueue starting node
 
 		int[] current;
+		int[] shortestPath = {  Integer.MAX_VALUE, 0 }; // (<distance>, <number of shortest paths>) 
 		while (!priorityQueue.isEmpty()) { // Modified BFS for Dijkstra's Algorithm
 			current = priorityQueue.poll(); // Removes head of priority queue
 			int index = current[0];
@@ -96,14 +96,20 @@ public class FloweryTrails {
 				distances[nextIndex] = newDist; // Update distance of node connection
 				parents.put(nextPathId, new int[] { index, nextIndex, nextTrailId, pathId });
 				if (nextIndex == numberOfNodes - 1) { // We have made it to node 9
+					if (newDist < shortestPath[0]) { // We have found a shorter path than the current shortest path
+						totalDistance -= shortestPath[0] * shortestPath[1]; // Subtract the previously stored total area  
+						shortestPath[0] = newDist; // Accounts for finding a path shorter than a path previously thought to be the shortest
+						shortestPath[1] = 0;
+					}
+					shortestPath[1]++;
 					updateTotalDistance(nextPathId);
-					System.out.println();
 					continue;
 				}
 				priorityQueue.add(new int[] { nextIndex, newDist, nextTrailId, nextPathId }); // Add this path to the priority queue
 				nextPathId++; 
 			}
 		}
+		System.out.printf("Shortest Path Length: %d \tNumber of Shortest Paths: %d%n", shortestPath[0], shortestPath[1]);
 		System.out.println(totalDistance * 2);
 	}
 
