@@ -31,7 +31,6 @@ public class FloweryTrails {
 		numberOfNodes = Integer.parseInt(input[0]); // Parse number of nodes
 		numberOfTrails = Integer.parseInt(input[1]); // Parse number of trails
 		distances = new int[numberOfNodes]; // Initialize array to keep track of distances 
-		// parents = new int[numberOfNodes]; // Initialize lookup to keep track of parent nodes ??
 		
 		trails = new int[numberOfTrails][2]; // Initialize lookup table to keep track of trails and whether or not they have been walked 
 		parents = new HashMap<Integer, int[]>(); // Initialize lookup to keep track of the different paths walked (DP) 
@@ -44,8 +43,6 @@ public class FloweryTrails {
 			} else {
 				distances[i] = i == 0 ? 0 : Integer.MAX_VALUE; // Initialize distance value as infinity for all other nodes
 			}
-			// parents[i] = -1; // Initialize the id of the parent node to -1
-			// pathMap.put(i, new ArrayList<Integer>()); // Initialize path map keys
 		}
 
 		int node1, node2, distance;
@@ -56,7 +53,6 @@ public class FloweryTrails {
 			node2 = Integer.parseInt(input[1]); // Parse node 2
 
 			if (node1 == node2) continue; // We don't care if a node connects to itself
-			// Trails are stored as pairs in the lookup table
 			distance = Integer.parseInt(input[2]); // Parse distance 
 
 			trails[i][0] = distance; // First value is length of the trail
@@ -70,7 +66,7 @@ public class FloweryTrails {
 
 	public void findShortestPath() {
 		priorityQueue = new PriorityQueue<int[]>(numberOfTrails, (v1, v2) -> v1[1] - v2[1]); // Initialize priority queue
-		priorityQueue.add(new int[] { 0, 0, 0, -1 }); // Enqueue starting node
+		priorityQueue.add(new int[] { 0, 0, -1 }); // Enqueue starting node
 
 		int[] current;
 		int[] shortestPath = {  Integer.MAX_VALUE, 0 }; // (<distance>, <number of shortest paths>) 
@@ -78,12 +74,10 @@ public class FloweryTrails {
 			current = priorityQueue.poll(); // Removes head of priority queue
 			int index = current[0];
 			int dist = current[1];
-			int trailId = current[2];
-			int pathId = current[3];
+			int pathId = current[2];
 			int nextPathId = parents.size();
-			System.out.printf("Current: %d (%d, %d, Path: %d) (Next: %d)%n", index, dist, trailId, pathId, nextPathId);
-
-			for (int[] connection : graph.get(index)) { // Loop over connected vertices
+			
+            for (int[] connection : graph.get(index)) { // Loop over connected vertices
 				int nextIndex = connection[0];
 				int nextDist = connection[1];
 				int nextTrailId = connection[2];
@@ -94,7 +88,7 @@ public class FloweryTrails {
 				boolean newPathIsLonger = newDist > oldDist; // Compare new distance with stored path distance
 				if (newPathIsLonger) continue; // New path is longer, so who cares
 				distances[nextIndex] = newDist; // Update distance of node connection
-				parents.put(nextPathId, new int[] { index, nextIndex, nextTrailId, pathId });
+				parents.put(nextPathId, new int[] { nextTrailId, pathId });
 				if (nextIndex == numberOfNodes - 1) { // We have made it to node 9
 					if (newDist < shortestPath[0]) { // We have found a shorter path than the current shortest path
 						totalDistance -= shortestPath[0] * shortestPath[1]; // Subtract the previously stored total area  
@@ -105,37 +99,25 @@ public class FloweryTrails {
 					updateTotalDistance(nextPathId);
 					continue;
 				}
-				priorityQueue.add(new int[] { nextIndex, newDist, nextTrailId, nextPathId }); // Add this path to the priority queue
+				priorityQueue.add(new int[] { nextIndex, newDist, nextPathId }); // Add this path to the priority queue
 				nextPathId++; 
 			}
 		}
-		System.out.printf("Shortest Path Length: %d \tNumber of Shortest Paths: %d%n", shortestPath[0], shortestPath[1]);
 		System.out.println(totalDistance * 2);
 	}
 
 	public void updateTotalDistance(int pathId) {
 		int[] path = parents.get(pathId); 
-		int prev = path[0]; // Get prev node
-		int next = path[1]; // Get next node
-		int trail = path[2]; // Get trail ID
-		int prevPathId = path[3]; // Get previous path ID
+		int trail = path[0]; // Get trail ID
+		int prevPathId = path[1]; // Get previous path ID
 		
 		if (prevPathId != -1) updateTotalDistance(prevPathId); // We not made it to node 0, recurse on parent node
 
 		int length = trails[trail][0]; // Get length of trail
 		boolean hasBeenWalked = trails[trail][1] == 1; // Has the trail been accounted for?
-		System.out.printf("%d -> %d (ID: %d, Length: %d, Walked: %s)%n", prev, next, trail, length, hasBeenWalked ? "Yes" : "No");
 		if (!hasBeenWalked) { // Trail has not been accounted for in total distance
 			totalDistance += length; // Add trail length to total distance
 			trails[trail][1] = 1; // Mark trail as accounted for
 		}
-	}
-
-	public void printMap() {
-		for (int pathId : parents.keySet()) {
-			int[] path = parents.get(pathId);
-			System.out.printf("Path %d <Prev: %d, Next: %d, trail: %d, ID: %d)%n", pathId, path[0], path[1], path[2], path[3]);
-		}
-		System.out.println();
 	}
 }
