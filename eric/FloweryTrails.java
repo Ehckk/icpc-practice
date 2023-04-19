@@ -1,9 +1,10 @@
 import java.util.Scanner;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 class FloweryTrails {
 	private HashMap<Integer, ArrayList<int[]>> graph; // Adjacency list for Dijkstra's Algorithm
@@ -38,7 +39,7 @@ class FloweryTrails {
 
 		for (int i = 0; i < numberOfNodes; i++) {
 			graph.put(i, new ArrayList<int[]>());
-			distances[i] = Integer.MAX_VALUE; // Fill distances array with infinite constants
+			distances[i] = (int) 1e9; // Fill distances array with infinite constants
 			shortestEdges.put(i, new HashMap<Integer, Integer>()); // Initialize shortestEdge table for each point
 			parents.put(i, new ArrayList<Integer>()); // Initialize parents subgraph
 		}
@@ -74,17 +75,16 @@ class FloweryTrails {
 
 		while (!priorityQueue.isEmpty()) {
 			int[] current = priorityQueue.poll(); // Remove first element from priority queue			
-			int node = (int) current[0];
+			int node = current[0];
 			if (visited[node]) continue; // If the element was visited, ignore it
 			visited[node] = true; // Visit node
 
 			for (int[] adjacent : graph.get(node)) {
-				int next = (int) adjacent[0];
+				int next = adjacent[0];
 				int oldDist = distances[next];
 				int newDist = distances[node] + adjacent[1]; 
 				if (newDist < oldDist) { // New distance is shorter
 					distances[next] = newDist; // Update the distance
-
 					parents.get(next).clear(); // Remove any previously found connections because this one is shorter
 					parents.get(next).add(node); // Add this connection to the parent table
 
@@ -100,21 +100,22 @@ class FloweryTrails {
 	}
 
 	public void getTotalDistance() { // Used to traverse the parents and sum the distances
-		int totalDistance = 0;
+		long totalDistance = 0;
 		Arrays.fill(visited, false); // Reset visited array
-		ArrayDeque<Integer> queue = new ArrayDeque<Integer>(numberOfNodes);
+		Queue<Integer> queue = new LinkedList<Integer>();
 
 		queue.add(numberOfNodes - 1); // Start with the maximum value node
 		while (!queue.isEmpty()) { // BFS
 			int current = queue.poll(); // Remove first element from queue
 			
-			if (visited[current]) continue; // If the element was visited, ignore it
-			visited[current] = true; // Visit node
-
+			// if (visited[current]) continue; // If the element was visited, ignore it
+			
 			for (int next : parents.get(current)) {
 				totalDistance += shortestEdges.get(current).get(next); // Get the minimum distance between the two nodes, add it to total
-
-				queue.add(next); // Enqueue the node
+				if (!visited[next]) {
+					visited[next] = true; // Mark node as visited
+					queue.add(next); // Enqueue the node
+				}
 			}
 		}
 		System.out.println(totalDistance * 2); // Output
