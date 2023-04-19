@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 class FloweryTrails {
-	private HashMap<Integer, ArrayList<long[]>> graph; // Adjacency list for Dijkstra's Algorithm
-	private PriorityQueue<long[]> priorityQueue; // Priority queue for Dijkstra's Algorithm
-	private long[] distances; // Distance table for Dijkstra's Algorithm 
+	private HashMap<Integer, ArrayList<int[]>> graph; // Adjacency list for Dijkstra's Algorithm
+	private PriorityQueue<int[]> priorityQueue; // Priority queue for Dijkstra's Algorithm
+	private int[] distances; // Distance table for Dijkstra's Algorithm 
 	private HashMap<Integer, ArrayList<Integer>> parents; // Parent subgraph for modified Dijkstra's Algorithm 
 
-	private HashMap<Integer, HashMap<Integer, Long>> shortestEdges; // Maps the shortest edges at each point to ignore inefficient edges
+	private HashMap<Integer, HashMap<Integer, Integer>> shortestEdges; // Maps the shortest edges at each point to ignore inefficient edges
 	private boolean[] visited; // Tracks the fully visited nodes for modified Dijkstra's Algorithm
 
 	private int numberOfNodes, numberOfTrails; // Number of point and trails
@@ -30,22 +30,22 @@ class FloweryTrails {
 		numberOfNodes = Integer.parseInt(input[0]); // Parse number of nodes
 		numberOfTrails = Integer.parseInt(input[1]); // Parse number of trails
 
-		graph = new HashMap<Integer, ArrayList<long[]>>(); // Initialize graph
-		distances = new long[numberOfNodes]; // Initialize distances array		
+		graph = new HashMap<Integer, ArrayList<int[]>>(); // Initialize graph
+		distances = new int[numberOfNodes]; // Initialize distances array		
 		parents = new HashMap<Integer, ArrayList<Integer>>(); // Initialize parents table
-		shortestEdges = new HashMap<Integer, HashMap<Integer, Long>>(); // Initialize shortest edge table
+		shortestEdges = new HashMap<Integer, HashMap<Integer, Integer>>(); // Initialize shortest edge table
 		visited = new boolean[numberOfNodes]; // Initialize visited array
 
 		for (int i = 0; i < numberOfNodes; i++) {
-			graph.put(i, new ArrayList<long[]>());
-			distances[i] = Long.MAX_VALUE; // Fill distances array with infinite constants
-			shortestEdges.put(i, new HashMap<Integer, Long>()); // Initialize shortestEdge table for each polong
+			graph.put(i, new ArrayList<int[]>());
+			distances[i] = Integer.MAX_VALUE; // Fill distances array with infinite constants
+			shortestEdges.put(i, new HashMap<Integer, Integer>()); // Initialize shortestEdge table for each point
 			parents.put(i, new ArrayList<Integer>()); // Initialize parents subgraph
 		}
 		distances[0] = 0; // Set distances from 0 (first node) to 0
 
 		int node1, node2;
-		long distance;
+		int distance;
 		for (int i = 0; i < numberOfTrails; i++) {
 			input = scnr.nextLine().trim().split(" "); // Read each connection line
 			node1 = Integer.parseInt(input[0]); // Parse node 1 
@@ -54,13 +54,13 @@ class FloweryTrails {
 
 			if (node1 == node2) continue; // We don't care if a node connects to itself
 			
-			graph.get(node1).add(new long[] { node2, distance }); // Connections are pairs in adj. list: (<node>, <distance>)
-			graph.get(node2).add(new long[] { node1, distance }); // Connections are two-way		
+			graph.get(node1).add(new int[] { node2, distance }); // Connections are pairs in adj. list: (<node>, <distance>)
+			graph.get(node2).add(new int[] { node1, distance }); // Connections are two-way		
 			if (shortestEdges.get(node1).get(node2) == null) { // No value is set
 				shortestEdges.get(node1).put(node2, distance); // Set distance
 				shortestEdges.get(node2).put(node1, distance); 
 			} else {
-				long newDistance = Math.min(shortestEdges.get(node1).get(node2), distance); // Set distance to whichever is smaller  
+				int newDistance = Math.min(shortestEdges.get(node1).get(node2), distance); // Set distance to whichever is smaller  
 				shortestEdges.get(node1).put(node2, newDistance); // Update distance
 				shortestEdges.get(node2).put(node1, newDistance);
 			}
@@ -69,19 +69,19 @@ class FloweryTrails {
 	}
 
 	public void findShortestPath() { // Modified Djikstra's Algorithm to build a subgraph of only the shortest paths
-		priorityQueue = new PriorityQueue<long[]>(numberOfTrails, (v1, v2) -> (int) (v1[1] - v2[1])); // Initialize priority queue
-		priorityQueue.add(new long[] { 0, 0 }); // Enqueue starting node
+		priorityQueue = new PriorityQueue<int[]>(numberOfTrails, (v1, v2) -> (int) (v1[1] - v2[1])); // Initialize priority queue
+		priorityQueue.add(new int[] { 0, 0 }); // Enqueue starting node
 
 		while (!priorityQueue.isEmpty()) {
-			long[] current = priorityQueue.poll(); // Remove first element from priority queue			
+			int[] current = priorityQueue.poll(); // Remove first element from priority queue			
 			int node = (int) current[0];
 			if (visited[node]) continue; // If the element was visited, ignore it
 			visited[node] = true; // Visit node
 
-			for (long[] adjacent : graph.get(node)) {
+			for (int[] adjacent : graph.get(node)) {
 				int next = (int) adjacent[0];
-				long oldDist = distances[next];
-				long newDist = distances[node] + adjacent[1]; 
+				int oldDist = distances[next];
+				int newDist = distances[node] + adjacent[1]; 
 				if (newDist < oldDist) { // New distance is shorter
 					distances[next] = newDist; // Update the distance
 
@@ -100,7 +100,7 @@ class FloweryTrails {
 	}
 
 	public void getTotalDistance() { // Used to traverse the parents and sum the distances
-		long totalDistance = 0;
+		int totalDistance = 0;
 		Arrays.fill(visited, false); // Reset visited array
 		ArrayDeque<Integer> queue = new ArrayDeque<Integer>(numberOfNodes);
 
