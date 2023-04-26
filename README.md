@@ -36,4 +36,4 @@
 
  
     To see the list of problems and recommended problems for new members 
-    visit the [documents folder]()
+    visit the [documents folder](https://github.com/Hpmason/icpc-practice/tree/master/documents)
