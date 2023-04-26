@@ -35,5 +35,5 @@
     ![folr](https://user-images.githubusercontent.com/76856697/232077982-f23ee97e-5ae2-4e6c-afd0-07a3494aa407.png)
 
  
-    To see the list of problems and recommended problems for new members 
+    To see the list of attempted problems and recommended problems for new members 
     visit the [documents folder](https://github.com/Hpmason/icpc-practice/tree/master/documents)
