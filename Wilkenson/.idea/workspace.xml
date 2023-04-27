@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="33d1263e-c44d-4c76-b069-8beb001f4ec5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Jacob/battleSimulation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Jacob/boundingRobots.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ehsan/mom.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/BattleSimulation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/BoundingRobots.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/BuildDeps.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/FloweryTrails.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/RunningMom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/builddeps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/grid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eric/testcases/flowerytrails.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2OXPXc5AzM6NTB1TgPavaZaDkDr" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/wilkenson/Desktop/ICPC /Wilkenson"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="33d1263e-c44d-4c76-b069-8beb001f4ec5" name="Changes" comment="" />
+      <created>1681703993457</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681703993457</updated>
+    </task>
+    <servers />
+  </component>
+</project>
