@@ -30,8 +30,9 @@
     Add the repository you created on you machine to the clone projects, add your solution files to the folder with your name,
     only modify your personal repository
     
-    ### do not modify any other folders
+    ### Do not modify any other folders.
     
     ![folr](https://user-images.githubusercontent.com/76856697/232077982-f23ee97e-5ae2-4e6c-afd0-07a3494aa407.png)
 
  
+    
