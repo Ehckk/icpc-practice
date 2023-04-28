@@ -22,14 +22,14 @@
    2) In the top right corner of the page , click FORK
 
       ![Fork Repo](https://user-images.githubusercontent.com/76856697/235175292-59b785fe-23a4-4255-8080-14a4b2d177d4.png)
-       
-      [Fork the repo] (https://docs.github.com/en/get-started/quickstart/fork-a-repo)
+
         
-      More info can be found[here](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
+      More info can be found [here](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 
     
- 3) Clone the icpc-practice project to you local machine and add the folder you created (created in step 1 )
- to the project and then you may add or delete files inside your folder
+  3) You now have a copy of the project in your own Github.
+    form your copy (in your profile) Clone the icpc-practice project to you local machine and add the folder you created (created in step 1 )
+    to the project and then you may add or delete files inside your folder
  
     ###  do not modify any other folders
  
