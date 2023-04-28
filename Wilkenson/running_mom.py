@@ -46,7 +46,7 @@ def find_safe_cities(from_parse: list) -> str:
 
     for location in cities_to_check:
         # visited.clear()
-        if dfs(location):
+        if dfs(location) is True:
             # if location in safe:
             res.append(location + ' safe')
         else:
