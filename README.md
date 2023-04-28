@@ -16,9 +16,20 @@
 
     Data: This folder should contain any data files needed for your project, such as spreadsheets, text files, or images.  
 
+ 2) ## Forking a repository 
+   1) Navigate to the ICPC-practice repo [icpc-ractice](https://github.com/Hpmason/icpc-practice)
+   
+   2) In the top right corner of the page , click FORK
+
+      ![Fork Repo](https://user-images.githubusercontent.com/76856697/235175292-59b785fe-23a4-4255-8080-14a4b2d177d4.png)
+
+        
+      More info can be found [here](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
+
     
- 2) Clone the icpc-practice project to you local machine and add the folder you created (created in step 1 )
- to the project and then you may add or delete files inside your folder
+  3) You now have a copy of the project in your own Github.
+    form your copy (in your profile) Clone the icpc-practice project to you local machine and add the folder you created (created in step 1 )
+    to the project and then you may add or delete files inside your folder
  
     ###  do not modify any other folders
  
@@ -30,7 +41,7 @@
     Add the repository you created on you machine to the clone projects, add your solution files to the folder with your name,
     only modify your personal repository
     
-    ### do not modify any other folders
+    ### Do not modify any other folders.
     
     ![folr](https://user-images.githubusercontent.com/76856697/232077982-f23ee97e-5ae2-4e6c-afd0-07a3494aa407.png)
 
