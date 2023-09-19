@@ -2,6 +2,8 @@
 Jacob Stephens, ICPC
 September 18, 2023
 Pairing Socks https://open.kattis.com/problems/pairingsocks
+Steven Halim Book pg. 77 (stacks, #5)
+
 AC
 '''
 
