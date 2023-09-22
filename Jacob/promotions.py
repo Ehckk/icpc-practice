@@ -45,48 +45,33 @@ def dfs(root, graph):
 for root in roots:
     dfs(root, graph)
 
+# obtain length of every level
+levels = [0 for _ in range(E)]
+for level in dist_graph.values():
+    levels[level] += 1
 
-print('x')
-'''
-for root in roots:
-    empToDep[root] = {0}
+# find outputs
+for currP in [A,B]: 
+    promoted = 0
+    for i in range(len(levels)):
+        r = currP - levels[i]
+        
 
-count = 0
-visited = roots[:]
+        if r == 0:
+            lastLevel = i+1
+            promoted += levels[i] 
+            currP = r
+            break
+
+        elif r < 0:
+            lastLevel = i+1
+            break
+
+        promoted += levels[i] 
+        currP = r  
+
+    print(promoted)
 
 
-visited = set()
-def dfs(visited, graph, node):
-    if node not in visited:
-        print(node)
-        visited.add(node)
-        for neighbor in graph[node]:
-            dfs(visited, graph, neighbor)
-
-
-for root in roots:
-    dfs(visited, graph, roots)
-
-
-for i, root in enumerate(roots):
-    for neighbor in graph.get(root):
-        if neighbor not in visited:
-            visited.append(neighbor)
-            roots.append(neighbor)
-
-            if root not in empToDep:
-                empToDep[root] = set()
-
-            empToDep[root].add(i)
-
-    
-
-print(visited, roots)
-#print(f'Unvisited: {set(v - list(graph))}')
-
-# make dict where key = employee and value = longest path to get there
-# make dict where key = path number from 0 to longest and value = employees in that group
-
-# 4 - 2 = 2 example find solution using graph
-# 2 - 2 = 0
-'''
+never = sum(levels[lastLevel:])
+print(never)
