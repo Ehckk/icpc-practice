@@ -19,7 +19,9 @@ NO
     # cannot lay brick size j + 1 at position i if
     #   i + j + 1 not in set and i + j + 1 < total
 """
-def solve():    
+from collections import defaultdict
+
+def solve():
     (N, MAX_1, MAX_2, MAX_3) = map(int, input().strip().split())
 
     crease_total = 0
@@ -27,27 +29,31 @@ def solve():
     for i, brick in enumerate(map(int, input().strip().split())):
         crease_total += brick
         if i + 1 < N: creases.add(crease_total)
-
-    visited = [[False for _ in range(max(MAX_1, MAX_2, MAX_3))] for _ in range(3)]
+    
+    combinations = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: False)))
 
     def brickwall(total, c1, c2, c3):
+        # print(total, c1, c2, c3)
         if total == crease_total: return True # Sum is target
         if total > crease_total: return False # Sum is above target
         if total in creases: return False # Sum is on crease
+        if combinations[c1][c2][c3]: return False # Combination already checked
 
         # This combination has already been checked
-        if visited[0][c1] and visited[1][c2] and visited[2][c3]: return False 
-        
-        visited[0][c1] = True
-        visited[1][c2] = True
-        visited[2][c3] = True
+        combinations[c1][c2][c3] = True
 
-        # place down a 1-brick
-        if c1 < MAX_1: return brickwall(total + 1, c1 + 1, c2, c3)
-        # place down a 2-brick
-        if c2 < MAX_2: return brickwall(total + 2, c1, c2  + 1, c3)
-        # place down a 3-brick
-        if c3 < MAX_3: return brickwall(total + 3, c1, c2, c3 + 1)
+        # place down a 3-brick, if possible
+        if c3 < MAX_3:
+            if not combinations[c1][c2][c3 + 1]:
+                if brickwall(total + 3, c1, c2, c3 + 1): return True
+        # place down a 2-brick, if possible
+        if c2 < MAX_2:
+            if not combinations[c1][c2 + 1][c3]:
+                if brickwall(total + 2, c1, c2 + 1, c3): return True
+        # place down a 1-brick, if possible
+        if c1 < MAX_1:
+            if not combinations[c1 + 1][c2][c3]:    
+                if brickwall(total + 1, c1 + 1, c2, c3): return True
 
         return False
 
@@ -55,4 +61,4 @@ def solve():
 
 print(solve())
 
-# Result: 
+# Result: Accepted
