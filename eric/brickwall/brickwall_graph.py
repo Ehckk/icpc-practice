@@ -1,24 +1,3 @@
-"""
-ignore this slop 
-
-5 2 1 3
-2 3 1 3 2
-YES
-
-5 1 2 3
-2 3 1 3 2
-NO
-
-5 6 1 1
-2 3 1 2 3
-NO
-
-- If the problem bricks contain 3 ones in a row -> NO
-- If the problem bricks contain 2 ones in a row -> NO
-- If the problem bricks contain a 1 -> ONLY 3 CAN BE USED
-    # cannot lay brick size j + 1 at position i if
-    #   i + j + 1 not in set and i + j + 1 < total
-"""
 from collections import defaultdict
 
 def solve():
@@ -60,5 +39,25 @@ def solve():
     return "YES" if brickwall(0, 0, 0, 0) else "NO"
 
 print(solve())
+"""
+ignore this slop 
 
+5 2 1 3
+2 3 1 3 2
+YES
+
+5 1 2 3
+2 3 1 3 2
+NO
+
+5 6 1 1
+2 3 1 2 3
+NO
+
+- If the problem bricks contain 3 ones in a row -> NO
+- If the problem bricks contain 2 ones in a row -> NO
+- If the problem bricks contain a 1 -> ONLY 3 CAN BE USED
+    # cannot lay brick size j + 1 at position i if
+    #   i + j + 1 not in set and i + j + 1 < total
+"""
 # Result: Accepted
