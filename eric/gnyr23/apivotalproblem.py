@@ -1,5 +1,3 @@
-
-
 def solve():
     line = list(map(int, input().strip().split()))
     T = line[0]

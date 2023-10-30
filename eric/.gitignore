@@ -1,4 +1,5 @@
 *.class
 **/bin
 **/.vscode
+**/output/*
 tempCodeRunnerFile.*
