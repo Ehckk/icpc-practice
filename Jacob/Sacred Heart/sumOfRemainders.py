@@ -1,3 +1,9 @@
+'''
+Jacob Stephens, ICPC 
+September 22, 2023
+Greater NY Regionals 2022, Sacred Heart (Practice)
+(#2/10) Sum of Remainders
+'''
 import sys
 raw = sys.stdin.read()
 
