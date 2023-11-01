@@ -38,7 +38,6 @@ else:
         (d.get(ction[1])).append(ction[0])
 
     count = 2
-    go = True
     
     for node in d:
         for neighbor in d.get(node):

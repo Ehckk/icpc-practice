@@ -1,0 +1,14 @@
+
+- Relation Schema and Instance
+	- Show a relation instance as a real table in MySQL
+- Attributes
+	- Domain is data type
+	- "William"
+	- 6
+	- "2022-08-15 00:00:00"
+	- Atomic.  For example, "Bill Smith 100 Penny Lane Waterbury" can be broken into bill and smith
+- Keys
+	- For example, if A={1,3,5} and B={1,2,3,4,5} , then A is a subset of B , and we write A⊆B
+	- SuperKey: a superkey is a set of attributes that uniquely identifies each tuple of a relation
+	- Candidate Key: A Candidate key is a single key or a group of multiple keys that uniquely identify rows in a table.
+		A Candidate key is a subset of Super keys and is devoid of any unnecessary attributes that 
