@@ -1,68 +1,79 @@
-from collections import deque, defaultdict
-
-# all possible directions
-directions = [(-1, -1), (1, -1), (-1, 1), (1, 1)]
+# all possible directions, U L D R
+directions = {
+	"R": (lambda x, y: (x, y)),
+	"U": (lambda x, y: (y, -x)),
+	"L": (lambda x, y: (-x, -y)),
+	"D": (lambda x, y: (-y, x))
+}
 
 def solve():
-    N_TREES, N_SENSORS, R_MAX = map(int, input().strip().split())
-    trees = []
-    for _ in range(N_TREES):
-        x, y = map(int, input().strip().split())
-        trees.append(x, y) 
-    sensors = []
-    for _ in range(N_SENSORS):
-        x, y = map(int, input().strip().split())
-        sensors.append((x, y)) # sensor positons
-    
-    found = None # valid positions go here
+	N_TREES, N_SENSORS, R_MAX = map(int, input().strip().split())
+	trees = set()
+	for _ in range(N_TREES):
+		x, y = map(int, input().strip().split())
+		trees.add((x, y))
+	sensors = set()
+	for _ in range(N_SENSORS):
+		sX, sY = map(int, input().strip().split())
+		sensors.add((sX, sY)) # sensor positons
+	
+	trees_used = set() # used trees go here
+	sensors_used = set() # used sensors go here
+	found = None # valid positions go here
 
-    def check(x: int, y: int, visited_trees: set, visited_sensors: set):
-        if len(current_trees) == len(sensors):
-            # base case, a tree has been found for each sensor, valid position found
-            if found: # We already found a position
-                return "Ambigious"
-            found = (x, y) 
-            return 
-        for sensor in sensors: # loop over sensors 
-            if sensor in current_sensors: # ignore sensors mapped to a tree
-                continue
-            for tree in trees: # loop over trees
-                if tree in current_trees: # ignore trees mapped to a sensor
-                    continue
-                # check if position maps to the tree
-                current_trees.add(tree)
-                current_sensors.add(sensor)
-                if check(x, y, current_trees, current_sensors):
-                    return True
-                current_trees.remove(tree)
-                current_sensors.remove(sensor)
-        return False
+	def check(x: int, y: int, key: str): # this is where the robot (possibly) is
+		# validate position
+		unused_sensors = set(sensors - sensors_used)
+		if len(unused_sensors) == 0:
+			return True
+		unused_trees = set(trees - trees_used)
+		direction = directions[key]
+		for sensor in unused_sensors:
+			sX, sY = sensor
+			adjX, adjY = direction(sX, sY)
+			tX = x + adjX
+			tY = y + adjY # is there a tree at this sensors position
+			target_tree = (tX, tY)
+			# print((x, y), (sensor), target_tree, len(unused_trees))
 
-            
-        
-    for tree in trees:
-        (treeX, treeY) = tree
-        current_trees = set()
-        current_trees.add(tree)
-        for sensor in sensors:
-            (sensorX, sensorY) = sensor
-            current_sensors = set()
-            current_sensors.add(sensor)
-            for xDirection, yDirection in directions:
-                x = treeX + (sensorX * xDirection) # calculate position
-                y = treeY + (sensorY * yDirection) 
-                check(x, y) # recursively check these trees
-    
-    for tree in trees:
-        current_trees.add(tree)
+			if not target_tree in unused_trees:
+				continue # tree does not exist or already used
 
-    if len(found) > 0: # 1 or more positions found
-        if len(found) == 1: # exactly 1 found
-            return " ".join(found[0])
-        return "Ambiguous"
-    return "Impossible"
+			trees_used.add(target_tree)
+			sensors_used.add(sensor)
+			result = check(x, y, key) # check position
+			trees_used.remove(target_tree) # backtrack
+			sensors_used.remove(sensor)
+			if result:
+				return True
+		return False
 
-print(solve())
+	# TODO: what happen to state?? use positions + direction?
+	for tree in trees:
+		(tX, tY) = tree
+		trees_used.add(tree)
+		for sensor in sensors:
+			sX, sY = sensor
+			sensors_used.add(sensor)
+			# start with a tree and sensor pair
+			# facing up
+			# facing right
+			# facing left
+			# facing down
+			for key, value in directions.items():
+				(adjX, adjY) = value(sX,sY) 
+				x = tX - adjX
+				y = tY - adjY
+				if check(x, y, key):
+					print(tree, sensor, key, (x, y))
+					if found: # 1 position already found, but we found another
+						return "Ambiguous"
+					found = (x, y)
+			sensors_used.remove(sensor)
+		trees_used.remove(tree)
 
+	if not found: # 1 or more positions found
+		return "Impossible"
+	return " ".join(found)
 
-    
+print(solve())	
