@@ -52,7 +52,7 @@ target = int(target)
 
 # initialize variables
 axis = ['N', 'E', 'S', 'W', 'N', 'E']
-justDeleted = 0
+justDeleted = 1
 
 # traverse through path until you have no more options
 while len(graph[target]) + justDeleted > 1:
