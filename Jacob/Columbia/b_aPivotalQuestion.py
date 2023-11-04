@@ -1,11 +1,12 @@
-# Jacob Stephens, October 31, 2023
-# Problem B: A Pivotal Question (GNYR ICPC 2023)
-
+'''
+    Jacob Stephens / October 31, 2023
+    Problem B: A Pivotal Question -- GNYR ICPC 2023
+'''
 A = [int(i) for i in input().split()[1:]]
 
 maxval = -float('inf')
 minval = float('inf')
-mins = []
+mins = set()
 maxes = []
 
 # traverse forward and backward through list,
@@ -17,9 +18,13 @@ for i in range(len(A)):
 
     x = A[len(A)-1-i]
     if x < minval:
-        mins.append(x)
+        mins.add(x)
         minval = x
 
 # calc pivots, and output
 pivots = [str(n) for n in maxes if n in mins]
-print(" ".join(pivots))
+
+if len(pivots) > 0:
+    print(" ".join(pivots[:100]))
+else:
+    print(0, end='')
