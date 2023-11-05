@@ -74,25 +74,33 @@ def morse_code_palindrome():
         i -= 1
         chars.append(morse[i])
     needed = "".join(chars)
-    min_found = float("inf")
-    found = []
 
-    def find_chars(morse_needed, current_chars):
+    min_found = float("inf")
+    found_chars = None
+    visited = set()
+
+    def find_chars(current_chars):
         current_morse = "".join(current_chars)
-        if len(current_morse) == len(morse_needed):  # We have mapped the characters needed
+
+        # print(current_morse)
+        if current_morse in visited:  # DP
+            return False
+        visited.add(current_morse)  # store this tested combination
+
+        if len(current_morse) == len(needed):  # We have mapped the characters needed
             return True
 
         if len(current_chars) == min_found:  # We already found a shorter combination
             return False
 
         # no morse code char is greater than 5 chars, no need to check morse than that each iter
-        check_len = min(5, len(morse_needed) - len(current_morse))
+        check_len = min(5, len(needed) - len(current_morse))
         while check_len > 0:
-            sub_str = morse_needed[len(current_morse):(len(current_morse) + check_len)]
+            sub_str = needed[len(current_morse):(len(current_morse) + check_len)]
             if to_char.get(sub_str, None):  # substring is a valid morse code char
                 # print(morse_needed, current_morse, sub_str)
                 current_chars.append(sub_str)  # use the morse char
-                is_valid = find_chars(morse_needed, current_chars)  # recurse
+                is_valid = find_chars(current_chars)  # recurse
                 if is_valid:  # valid combination
                     return True
                 current_chars.pop()  # invalid combination
@@ -102,21 +110,22 @@ def morse_code_palindrome():
     needed_count = min(5, len(needed))
     for i in range(needed_count):
         morse_char = needed[:(needed_count - i)]
+        if not to_char.get(morse_char, None):
+            continue
         current = [morse_char]
-        result = find_chars(needed, current)
+        result = find_chars(current)
         if not result:
             continue
-        # print(current, len(current), len(current) < min_found)
         if not len(current) < min_found:
             continue
-        found = current
+        found_chars = current
         min_found = len(current)
 
     # morse_added = "".join(found)
     # print(is_end_palindrome(morse + morse_added, 0))
 
-    chars_to_add = "".join(map(lambda x: to_char[x], found))
-    solution = [str(len(found)), chars_to_add]
+    chars_to_add = "".join(map(lambda x: to_char[x], found_chars))
+    solution = [str(len(found_chars)), chars_to_add]
     return " ".join(solution)
 
 
