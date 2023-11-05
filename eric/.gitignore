@@ -6,3 +6,4 @@
 tempCodeRunnerFile.*
 **/*.exe
 cmake-build-debug
+venv
