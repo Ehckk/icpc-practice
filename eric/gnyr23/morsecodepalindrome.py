@@ -112,11 +112,10 @@ def morse_code_palindrome():
         found = current
         min_found = len(current)
 
+    # morse_added = "".join(found)
+    # print(is_end_palindrome(morse + morse_added, 0))
+
     chars_to_add = "".join(map(lambda x: to_char[x], found))
-
-    morse_added = "".join(found)
-    print(is_end_palindrome(morse + morse_added, 0))
-
     solution = [str(len(found)), chars_to_add]
     return " ".join(solution)
 

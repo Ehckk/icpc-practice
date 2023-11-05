@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from pathlib import Path
+from importlib.machinery import SourceFileLoader
 import subprocess
 
 parser = ArgumentParser()
@@ -13,6 +14,8 @@ parser.add_argument("-a", "--ans-ext", type=str,
                     help="File extension for answer files", default="ans")
 parser.add_argument("-t", "--time-limit", type=int,
                     help="Time limit in milliseconds", default=None)
+parser.add_argument("-r", "--rules", type=str,
+                    help="Ignore this unless your problem has special rules", default="")
 parser.add_argument("-s", "--show", type=int,
                     help="Show the testcases you got wrong", default=False)
 args = parser.parse_args()
@@ -30,18 +33,24 @@ def test_submission(cmd, testcase, answer, time_limit=None):
         solution = subprocess.run(cmd, input=testcase, timeout=time_limit, text=True,
                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = solution.stdout
-        if output != answer:
-            verdict_args = [
-                f"Input:\n{testcase}"
-                f"Received:\n{output}", 
-                f"Expected:\n{answer}"
-            ]
-            return "WA", verdict_args
-        return "AC", []
     except subprocess.TimeoutExpired:
         return "TLE", []
     except subprocess.CalledProcessError as err:
         return "RE", [err.stderr]
+    judge_module = "rules"
+    if args.rules:
+        rules_module = f"rules_{args.rules}"
+        if Path(f"submit_rules\\{rules_module}.py").exists():
+            judge_module = rules_module
+    rules = SourceFileLoader(judge_module, f"submit_rules\\{judge_module}.py").load_module()
+    if not rules.judge(output, answer, testcase):
+        verdict_args = [
+            f"Input:\n{testcase}"
+            f"Received:\n{output}",
+            f"Expected:\n{answer}"
+        ]
+        return "WA", verdict_args
+    return "AC", []
 
 
 CWD = Path.cwd()
