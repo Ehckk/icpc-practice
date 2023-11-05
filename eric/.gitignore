@@ -4,3 +4,5 @@
 **/.vscode
 **/output/*
 tempCodeRunnerFile.*
+**/*.exe
+cmake-build-debug

@@ -56,16 +56,20 @@ for in_path in path.glob(f"*.{args.in_ext}"):
 if len(testcases) == 0:
     raise NotImplementedError("No testcase files found!")
 
+testcases.sort(key=lambda x: len(x[0].stem))
+
 submission_path = CWD.joinpath(Path(args.submission))
 command = f"python {submission_path}"  # TODO: more than python?
 result = "WA"
 for i in range(len(testcases)):
     in_path, ans_path = testcases[i]
-    if args.show: print(f"{i + 1}/{len(testcases)}: ", end="")
+    if args.show:
+        print(f"{i + 1}/{len(testcases)}: ({in_path.stem}{in_path.suffix})", end=" ")
     with open(in_path, "r") as in_file, open(ans_path, "r") as ans_file:
         result, result_args = test_submission(
             command, in_file.read(), ans_file.read(), args.time_limit)
-    if args.show: print(verdicts[result])
+    if args.show:
+        print(verdicts[result])
     if result == "AC":
         continue
     if result_args and args.show:

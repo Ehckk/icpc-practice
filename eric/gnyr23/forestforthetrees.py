@@ -3,7 +3,7 @@ directions = {
 	"R": (lambda x, y: (x, y)),
 	"U": (lambda x, y: (y, -x)),
 	"L": (lambda x, y: (-x, -y)),
-	"D": (lambda x, y: (-y, x))
+	"D": ((lambda x, y: (-y, x)))
 }
 
 def solve():
@@ -12,68 +12,59 @@ def solve():
 	for _ in range(N_TREES):
 		x, y = map(int, input().strip().split())
 		trees.add((x, y))
-	sensors = set()
+	sensors = []
 	for _ in range(N_SENSORS):
 		sX, sY = map(int, input().strip().split())
-		sensors.add((sX, sY)) # sensor positons
+		sensors.append((sX, sY)) # sensor positons
 	
-	trees_used = set() # used trees go here
-	sensors_used = set() # used sensors go here
 	found = None # valid positions go here
 
-	def check(x: int, y: int, key: str): # this is where the robot (possibly) is
+	def check(x: int, y: int, key: str, tree: tuple[int, int]):
 		# validate position
-		unused_sensors = set(sensors - sensors_used)
-		if len(unused_sensors) == 0:
-			return True
-		unused_trees = set(trees - trees_used)
-		direction = directions[key]
-		for sensor in unused_sensors:
-			sX, sY = sensor
+		mapped_trees = set({tree})
+		for tree in set(trees - {tree}): # set difference 
+			direction = directions[key]
+			for sensor in sensors[1:]:
+				sX, sY = sensor
+				adjX, adjY = direction(sX, sY)
+				tX = x + adjX
+				tY = y + adjY 
+				target_tree = (tX, tY)
+				# is there a tree at this sensors position
+				if not target_tree in trees:
+					return False
+				mapped_trees.add(target_tree)
+	
+			if not len(mapped_trees) == N_SENSORS:  # Unable to map all trees
+				return False
+
+			# ensure any unmapped trees are not within R_MAX
+			for tree in set(trees - mapped_trees):
+				tX, tY = tree
+				m_dist = abs(tX - x) + abs(tY - y)
+				if m_dist > R_MAX: # tree outside robot's range, does not need to be mapped
+					continue
+				return False # "detectable" tree within robots range, invalid position
+		return True
+			
+	for key, direction in directions.items():
+		for tree in trees:
+			(tX, tY) = tree
+			sX, sY = sensors[0] # all sensors will have to be mapped
 			adjX, adjY = direction(sX, sY)
-			tX = x + adjX
-			tY = y + adjY # is there a tree at this sensors position
-			target_tree = (tX, tY)
-			# print((x, y), (sensor), target_tree, len(unused_trees))
-
-			if not target_tree in unused_trees:
-				continue # tree does not exist or already used
-
-			trees_used.add(target_tree)
-			sensors_used.add(sensor)
-			result = check(x, y, key) # check position
-			trees_used.remove(target_tree) # backtrack
-			sensors_used.remove(sensor)
-			if result:
-				return True
-		return False
-
-	# TODO: what happen to state?? use positions + direction?
-	for tree in trees:
-		(tX, tY) = tree
-		trees_used.add(tree)
-		for sensor in sensors:
-			sX, sY = sensor
-			sensors_used.add(sensor)
-			# start with a tree and sensor pair
-			# facing up
-			# facing right
-			# facing left
-			# facing down
-			for key, value in directions.items():
-				(adjX, adjY) = value(sX,sY) 
-				x = tX - adjX
-				y = tY - adjY
-				if check(x, y, key):
-					print(tree, sensor, key, (x, y))
-					if found: # 1 position already found, but we found another
-						return "Ambiguous"
-					found = (x, y)
-			sensors_used.remove(sensor)
-		trees_used.remove(tree)
-
-	if not found: # 1 or more positions found
+			x = tX - adjX
+			y = tY - adjY
+			pos = (x, y) 
+			if pos in trees:
+				continue
+			if not check(x, y, key, tree): # check if the robot is possibly at this position
+				continue
+			if found: # Location already found, we just found another 
+				return "Ambiguous" 
+			found = (x, y)
+	if not found: # no valid positions found
 		return "Impossible"
-	return " ".join(found)
+	return " ".join(map(str, found))
 
-print(solve())	
+
+print(solve())
