@@ -1,11 +1,13 @@
 from argparse import ArgumentParser
 from pathlib import Path
 from importlib.machinery import SourceFileLoader
+from commands import find_command
 import subprocess
+
 
 parser = ArgumentParser()
 parser.add_argument("submission", type=str,
-                    help="Path to the python file to submit")
+                    help="Path to the python file to judge")
 parser.add_argument("-d", "--dir", type=str,
                     help="Path to directory with input and answer files", default=None)
 parser.add_argument("-i", "--in-ext", type=str,
@@ -16,8 +18,12 @@ parser.add_argument("-t", "--time-limit", type=int,
                     help="Time limit in milliseconds", default=None)
 parser.add_argument("-r", "--rules", type=str,
                     help="Ignore this unless your problem has special rules", default="")
-parser.add_argument("-s", "--show", type=int,
+parser.add_argument("-s", "--show", type=bool,
                     help="Show the testcases you got wrong", default=False)
+parser.add_argument("-l", "--lang", type=str,
+                    help="Language of the submission", default="py")
+parser.add_argument("-e", "--exec", type=bool,
+                    help="Submission is an executable file", default=False)
 args = parser.parse_args()
 
 verdicts = {
@@ -28,7 +34,7 @@ verdicts = {
 }
 
 
-def test_submission(cmd, testcase, answer, time_limit=None):
+def test_submission(cmd, testcase, answer, rules, time_limit=None):
     try:
         solution = subprocess.run(cmd, input=testcase, timeout=time_limit, text=True,
                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -37,12 +43,6 @@ def test_submission(cmd, testcase, answer, time_limit=None):
         return "TLE", []
     except subprocess.CalledProcessError as err:
         return "RE", [err.stderr]
-    judge_module = "rules"
-    if args.rules:
-        rules_module = f"rules_{args.rules}"
-        if Path(f"submit_rules\\{rules_module}.py").exists():
-            judge_module = rules_module
-    rules = SourceFileLoader(judge_module, f"submit_rules\\{judge_module}.py").load_module()
     if not rules.judge(output, answer, testcase):
         verdict_args = [
             f"Input:\n{testcase}"
@@ -61,22 +61,36 @@ for in_path in path.glob(f"*.{args.in_ext}"):
     if not ans_path.exists():
         continue
     testcases.append((in_path, ans_path))
-
 if len(testcases) == 0:
     raise NotImplementedError("No testcase files found!")
-
 testcases.sort(key=lambda x: len(x[0].stem))
 
 submission_path = CWD.joinpath(Path(args.submission))
-command = f"python {submission_path}"  # TODO: more than python?
+if not args.exec:
+    command = f"{find_command(args.lang)} {submission_path}"
+else:
+    command = submission_path
+
+# Load rules file
+judge_module = "rules"
+judge_path = Path(__file__).parent.joinpath(Path(f"rules\\{judge_module}.py"))
+if args.rules:
+    rules_module = f"rules_{args.rules}"
+    rules_path = Path(__file__).parent.joinpath(Path(f"rules\\{rules_module}.py"))
+    if rules_path.exists():
+        judge_module = rules_module
+        judge_path = rules_path
+rules_file = SourceFileLoader(judge_module, str(judge_path)).load_module()
+
+# Judge solution
 result = "WA"
 for i in range(len(testcases)):
     in_path, ans_path = testcases[i]
     if args.show:
         print(f"{i + 1}/{len(testcases)}: ({in_path.stem}{in_path.suffix})", end=" ")
     with open(in_path, "r") as in_file, open(ans_path, "r") as ans_file:
-        result, result_args = test_submission(
-            command, in_file.read(), ans_file.read(), args.time_limit)
+        result, result_args = test_submission(command, in_file.read(), ans_file.read(),
+                                              rules_file, args.time_limit)
     if args.show:
         print(verdicts[result])
     if result == "AC":

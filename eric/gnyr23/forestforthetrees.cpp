@@ -62,18 +62,19 @@ bool check(p pos, p t, direction d) {
         return false;
     }
     return true;
-};
+}
 
 int main() {
     int x, y;
     scanf("%d %d %d\n", &n_t, &n_s, &r_max);
     for (int i = 0; i < n_t; i++) {
         int t_x, t_y;
+        scanf("%d %d\n", &x, &y);
         trees.insert(pair(t_x, t_y));
     }
     for (int i = 0; i < n_s; i++) {
         scanf("%d %d\n", &x, &y);
-        sensors[i] = (pair(x, y));
+        sensors[i] = pair(x, y);
     }
     for (char d : {'R', 'U', 'L', 'D' }) {
         for (auto& t : trees) {
@@ -87,16 +88,13 @@ int main() {
             }
             if (is_found) {
                 cout << "Ambiguous" << endl;
-                return 0;
             }
             found = pos;
         }
     }
     if (!is_found) {
         cout << "Impossible" << endl;
-        return 0;
     }
     cout << found.first << " " << found.second << endl;
-    return 0;
 }
 
