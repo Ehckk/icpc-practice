@@ -1,0 +1,1 @@
+visited = { t:{ s:[False for _ in range(4)] for s in range(1000) } for t in range(5000) }
